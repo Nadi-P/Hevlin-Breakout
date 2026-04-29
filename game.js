@@ -14,9 +14,21 @@
   const LEVEL_SPEEDS = [4.2, 4.6, 5.0, 5.4, 5.8];
   const TOTAL_LEVELS = LEVEL_GRIDS.length;
 
+    // Colors
+  const BRICK_COLORS = [
+    '#9fd8ff', '#7ec7ff', '#6cc1ff', '#4fb0f0', '#2f8fd6', '#b9e1ff', '#a5d6ff',
+  ];
+
+  // Layout
+  const TOP_MARGIN = 10;
+  const SIDE_MARGIN = 10;
+  const BRICK_PAD = 2;
+  const PADDLE_BOTTOM_OFFSET = 36;
+  const BRICK_AREA_FRACTION = 0.55; // bricks fill top 55% of playfield height
+
   // Power-up drop probabilities (per brick break)
   const POWERUP_TRIPLE_CHANCE = 0.05;
-  const POWERUP_MULTI_CHANCE = 0.2;
+  const POWERUP_MULTI_CHANCE = 0.1;
 
   // Hit-sound chance: roughly 1 out of 3 brick breaks
   const HIT_SOUND_CHANCE = 1 / 3;
@@ -79,17 +91,7 @@
     ],
   };
 
-  // Colors
-  const BRICK_COLORS = [
-    '#9fd8ff', '#7ec7ff', '#6cc1ff', '#4fb0f0', '#2f8fd6', '#b9e1ff', '#a5d6ff',
-  ];
 
-  // Layout
-  const TOP_MARGIN = 60;
-  const SIDE_MARGIN = 10;
-  const BRICK_PAD = 2;
-  const PADDLE_BOTTOM_OFFSET = 36;
-  const BRICK_AREA_FRACTION = 0.55; // bricks fill top 55% of playfield height
 
   // ============================================================
   // DOM
@@ -107,6 +109,9 @@
   const legendEl = document.getElementById('legend');
   const greetingEl = document.getElementById('greeting');
   const appEl = document.getElementById('app');
+  const muteBtn = document.getElementById('muteBtn');
+  const muteIconOn = muteBtn.querySelector('.ic-on');
+  const muteIconOff = muteBtn.querySelector('.ic-off');
 
   // ============================================================
   // AUDIO
@@ -149,12 +154,22 @@
     // clone-like: reuse the same element but reset
     playOneShot(a);
   }
+  let musicMuted = false;
   function startMusic() {
+    if (musicMuted) return;
     rockAudio.play().catch(() => {});
   }
   function stopMusic() {
     try { rockAudio.pause(); rockAudio.currentTime = 0; } catch (e) {}
   }
+  function setMusicMuted(m) {
+    musicMuted = m;
+    rockAudio.muted = m;
+    muteBtn.classList.toggle('muted', m);
+    muteIconOn.style.display = m ? 'none' : '';
+    muteIconOff.style.display = m ? '' : 'none';
+  }
+  muteBtn.addEventListener('click', () => setMusicMuted(!musicMuted));
 
   // ============================================================
   // GAME STATE
@@ -209,6 +224,7 @@
     overlay.style.display = 'none';
     const hud = document.querySelector('.hud');
     if (hud) hud.style.display = 'none';
+    if (muteBtn) muteBtn.style.display = 'none';
     // Allow page scrolling on the greeting screen (gameplay normally locks scroll).
     document.documentElement.classList.add('scrollable');
     document.body.classList.add('scrollable');
