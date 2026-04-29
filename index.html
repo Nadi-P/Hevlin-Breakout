@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="style.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#eaf6ff" />
+<title>Breakout — A Gift for Hevlin</title>
+</head>
+<body>
+<div id="app">
+  <div class="hud">
+    <div class="pill">Level <span id="lvl">1</span>/5</div>
+    <div class="pill">Score <span id="score">0</span></div>
+    <div class="pill lives">♥ <span id="lives">3</span></div>
+  </div>
+  <div id="stage">
+    <canvas id="game"></canvas>
+    <div class="toast" id="toast"></div>
+    <div class="overlay" id="overlay">
+      <div class="card">
+        <h1 id="ovTitle">For Hevlin 💙</h1>
+        <p id="ovText">Drag your finger to move the paddle. Catch power-ups to make magic happen!</p>
+        <div class="legend" id="legend">
+          <span><span class="dot multi"></span>+3 balls</span>
+          <span><span class="dot triple"></span>Triple all!</span>
+        </div>
+        <button class="btn" id="ovBtn">Start</button>
+      </div>
+    </div>
+    <div id="greeting" class="greeting"></div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
